@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
 import { HttpTransportType, LogLevel } from '@microsoft/signalr';
 import { Subject } from 'rxjs/internal/Subject';
+import { SignalRModal } from '../model/signal-r-modal';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class SignalRService {
         skipNegotiation: true,
         transport: HttpTransportType.WebSockets
       })
-      .withAutomaticReconnect([0, 10, 15, 30])
+      .withAutomaticReconnect([0, 5000, 150000, 300000])
       .build();
   }
 
@@ -30,12 +31,20 @@ export class SignalRService {
 
           // Send connectionId to server
           this.connection
-            .invoke('CreateConnection', gValue, window.sessionStorage.getItem('userId'))
+            .invoke('SaveConnection', gValue, window.sessionStorage.getItem('userId'))
             .then((data) => {
               console.log(data)
             });
         })
     });
-    this.connection.on('Status', data => console.log(data));
+    this.connection.on('Status', data => {
+      console.log(data as SignalRModal);
+    });
+  }
+
+  async createConversation(): Promise<any> {
+    const connectionId = window.sessionStorage.getItem('connectionId');
+    const userId = window.sessionStorage.getItem('userId');
+    return await this.connection.invoke('CreateConveration', connectionId, userId, "");
   }
 }

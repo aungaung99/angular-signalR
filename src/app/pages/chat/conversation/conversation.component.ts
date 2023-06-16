@@ -8,39 +8,33 @@ import {
   Renderer2,
   ViewChild
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import * as signalR from "@microsoft/signalr";
 import { ChatConversationModal } from 'src/app/core/model/chat-conversation-modal';
+import { ChatService } from 'src/app/core/services/chat.service';
 
 @Component({
   selector: 'app-conversation',
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.scss']
 })
-export class ConversationComponent implements OnInit, AfterViewInit, AfterContentInit {
-  @Input() conversation: Partial<ChatConversationModal> = {};
-  @Input() signalConnection!: signalR.HubConnection;
+export class ConversationComponent implements OnInit {
+  conversation: Partial<ChatConversationModal> = {};
   @ViewChild('messagesBox') messagesBox!: ElementRef<HTMLDivElement>;
   @ViewChild("textMessage") textMessage!: ElementRef<HTMLInputElement>;
 
-  constructor(private render: Renderer2) {
-  }
-
-  ngAfterContentInit(): void {
-    console.log(this.signalConnection);
+  constructor(private render: Renderer2, private chatService: ChatService, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    // this.signalConnection.invoke('GetConnectionId')
-    //   .then((e) => {
-    //     console.log(e);
-    //   });
-
-    console.log(this.signalConnection);
-  }
-
-  ngAfterViewInit() {
+    this.route.queryParams.subscribe((params) => {
+      this.chatService.getData(params['id'], 0, 20).subscribe((res) => {
+        this.conversation = res.data;
+      });
+    });
 
   }
+
 
   sendMessage(): void {
     let message = this.textMessage.nativeElement.value;

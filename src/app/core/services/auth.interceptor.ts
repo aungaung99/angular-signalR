@@ -15,20 +15,9 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    // if (window.sessionStorage.getItem('accessToken') === null || window.sessionStorage.getItem('accessToken') === undefined) {
-    //   let formData = new FormData();
-    //   formData.append('username', '09777903909');
-    //   formData.append('password', 'Efficient@soft#1982');
-    //   this.authService.post(formData).subscribe((res) => {
-    //     console.log(res);
-    //     window.sessionStorage.setItem('accessToken', res.data.access_token);
-    //     window.sessionStorage.setItem('userId', res.data.user.id);
-    //   });
-    // }
-
     request = request.clone({
       setHeaders: {
-        Authorization: `Bearer ${window.sessionStorage.getItem('accessToken')}`,
+        Authorization: `Bearer ${window.sessionStorage.getItem('access_token')}`,
       },
     });
 
