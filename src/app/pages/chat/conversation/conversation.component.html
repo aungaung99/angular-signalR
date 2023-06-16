@@ -1,0 +1,32 @@
+<div class="bg-slate-50 border border-slate-300 rounded-lg p-6 drop-shadow-sm 2xl:w-1/2 w-full"
+     *ngIf="conversation!==null">
+  <div class="inline-flex items-center justify-between mb-6">
+    <div
+      class="relative inline-flex items-center justify-center w-14 h-14 overflow-hidden bg-indigo-300 rounded-full dark:bg-gray-600">
+      <span class="font-medium text-md text-gray-600 dark:text-gray-300">JL</span>
+    </div>
+    <h2 class="text-indigo-500 text-xl ms-4">{{(conversation === undefined) ? '' : conversation.conversationName}}</h2>
+  </div>
+  <div #messagesBox class="border border-slate-300 p-6 rounded-lg shadow-inner mb-4" *ngIf="conversation!==undefined">
+    <div *ngFor="let message of conversation.messages" class="flex mb-4">
+      <div [ngClass]="{'hidden':message.userId=='051a8136-8a23-4e24-94e8-36ddc50c1763'}"
+           class="relative inline-flex items-center justify-center w-10 h-10 overflow-hidden bg-indigo-300 rounded-full dark:bg-gray-600 mr-4">
+        <span class="font-medium text-md text-gray-600 dark:text-gray-300">A</span>
+      </div>
+      <span class="bg-slate-300 px-3 py-2 rounded-lg"
+            [ngClass]="{'order-2':message.userId=='051a8136-8a23-4e24-94e8-36ddc50c1763'}">{{message.message}}</span>
+      <div *ngFor="let message of conversation.messages" class="flex-grow"
+           [ngClass]="{'order-1':message.userId=='051a8136-8a23-4e24-94e8-36ddc50c1763'}"></div>
+    </div>
+  </div>
+  <div class="flex justify-between">
+    <div class="flex-grow">
+      <input type="text" #textMessage
+             class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-full focus:ring-blue-500 focus:border-blue-500 block w-full px-3.5 py-2.5"
+             placeholder="Enter userId">
+    </div>
+    <div>
+      <button class="bg-indigo-600 rounded-full ms-5 px-4 py-2 text-white" (click)="sendMessage()">Send Message</button>
+    </div>
+  </div>
+</div>
