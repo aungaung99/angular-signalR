@@ -4,8 +4,8 @@
       Create Conversation
     </h1>
     <div class="mb-4">
-      <label for="userId" class="block mb-2 text-sm font-medium text-gray-900">UserId</label>
-      <input type="text" id="userId" #userId class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter userId" (change)="userIdChange()">
+      <label for="userId" class="block mb-2 text-sm font-medium text-gray-900">Id (or) Phone Number</label>
+      <input type="text" id="userId" #userId class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Enter id (or) phone number" (change)="userIdChange()">
     </div>
 
     <div class="border border-indigo-200 bg-slate-100 p-3 rounded-lg mb-4 text-sm" *ngIf="status!==''">
@@ -23,6 +23,4 @@
       </button>
     </div>
   </div>
-
-  <app-conversation [conversation]="conversation"></app-conversation>
 </div>

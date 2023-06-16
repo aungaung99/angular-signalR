@@ -4,6 +4,7 @@ import { HttpTransportType, LogLevel } from '@microsoft/signalr';
 import { ChatService } from "../../core/services/chat.service";
 import { ChatConversationModal } from "../../core/model/chat-conversation-modal";
 import { SignalRService } from 'src/app/core/services/signal-r.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -16,8 +17,7 @@ export class ChatComponent implements OnInit {
   status: string = '';
   conversation!: ChatConversationModal;
 
-  constructor(private signalRService: SignalRService, private chatService: ChatService) {
-
+  constructor(private signalRService: SignalRService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -29,9 +29,10 @@ export class ChatComponent implements OnInit {
   }
 
   createConversation(): void {
-    // let _userId = this.userId.nativeElement.value;
-    // if (_userId !== undefined && _userId !== null && _userId !== '') {
-    //   this.signalConnection.invoke('CreateFromBiker', this.connectionId, _userId, '1HEX-EGI2-J1R4-QC4X');
-    // }
+    this.signalRService.createConversation()
+      .then((res) => {
+        this.router.navigate(['./chat/conversation'],
+          { queryParams: { id: res } })
+      });
   }
 }
