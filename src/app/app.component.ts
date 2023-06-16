@@ -1,21 +1,20 @@
-import {Component, OnInit} from '@angular/core';
-import * as signalR from "@microsoft/signalr";
-import {HttpTransportType, LogLevel} from "@microsoft/signalr";
-import {Route} from "@angular/router";
-import {AuthService} from "./services/auth.service";
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import { AuthService } from "./core/services/auth.service";
+import { SignalRService } from './core/services/signal-r.service';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, AfterViewInit {
   title = 'angular-signalR';
-
-  constructor(private authService: AuthService) {
+  constructor(private signalRService: SignalRService) {
+  }
+  ngAfterViewInit(): void {
   }
 
   ngOnInit(): void {
-
+    this.signalRService.connect();
   }
 }

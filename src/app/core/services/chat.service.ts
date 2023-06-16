@@ -1,8 +1,8 @@
-import {Injectable} from '@angular/core';
-import {HttpClient, HttpHeaders} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {GlobalVarialbe} from "../global";
-import {RootModel} from "../model/rool-modal";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { GlobalVarialbe } from "../../global";
+import { RootModel } from "../model/rool-modal";
 
 @Injectable({
   providedIn: 'root'

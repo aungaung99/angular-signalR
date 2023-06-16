@@ -1,28 +1,34 @@
-import {NgModule} from '@angular/core';
-import {BrowserModule} from '@angular/platform-browser';
+import { NgModule } from '@angular/core';
+import { BrowserModule } from '@angular/platform-browser';
 
-import {AppRoutingModule} from './app-routing.module';
-import {AppComponent} from './app.component';
-import {ChatComponent} from './chat/chat.component';
-import {HomeComponent} from './home/home.component';
-import {ChatService} from "./services/chat.service";
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
-import {AuthInterceptor} from "./services/auth.interceptor";
-import { ConversationComponent } from './chat/conversation/conversation.component';
+import { AppRoutingModule } from './app-routing.module';
+import { AppComponent } from './app.component';
+import { ChatComponent } from './pages/chat/chat.component';
+import { HomeComponent } from './pages/home/home.component';
+import { ChatService } from "./core/services/chat.service";
+import { HTTP_INTERCEPTORS, HttpClientModule } from "@angular/common/http";
+import { AuthInterceptor } from "./core/services/auth.interceptor";
+import { ConversationComponent } from './pages/chat/conversation/conversation.component';
+import { LoginComponent } from './pages/login/login.component';
+import { ToastComponent } from './shared/components/toast/toast.component';
+import { AuthService } from './core/services/auth.service';
+import { SignalRService } from './core/services/signal-r.service';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ChatComponent,
     HomeComponent,
-    ConversationComponent
+    ChatComponent,
+    ConversationComponent,
+    LoginComponent,
+    ToastComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [ChatService, {
+  providers: [ChatService, AuthService, SignalRService, {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
