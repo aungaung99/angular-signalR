@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
-import { AuthService } from "./core/services/auth.service";
 import { SignalRService } from './core/services/signal-r.service';
 
 @Component({

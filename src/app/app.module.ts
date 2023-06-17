@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ChatComponent } from './pages/chat/chat.component';
@@ -13,6 +13,9 @@ import { LoginComponent } from './pages/login/login.component';
 import { ToastComponent } from './shared/components/toast/toast.component';
 import { AuthService } from './core/services/auth.service';
 import { SignalRService } from './core/services/signal-r.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ChatSkeletonComponent } from './shared/components/chat-skeleton/chat-skeleton.component';
+import { DateTimeComponent } from './shared/components/date-time/date-time.component';
 
 @NgModule({
   declarations: [
@@ -21,12 +24,17 @@ import { SignalRService } from './core/services/signal-r.service';
     ChatComponent,
     ConversationComponent,
     LoginComponent,
-    ToastComponent
+    ToastComponent,
+    ChatSkeletonComponent,
+    DateTimeComponent,
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   providers: [ChatService, AuthService, SignalRService, {
     provide: HTTP_INTERCEPTORS,
