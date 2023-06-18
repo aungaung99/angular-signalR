@@ -3,22 +3,27 @@ import * as signalR from '@microsoft/signalr';
 import { HttpTransportType, LogLevel } from '@microsoft/signalr';
 import { Subject } from 'rxjs/internal/Subject';
 import { SignalRModal } from '../model/signal-r-modal';
+import { GlobalVarialbe } from 'src/app/global';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SignalRService {
-  private connection!: signalR.HubConnection;
+  public connection!: signalR.HubConnection;
   private message$!: Subject<any>;
   constructor() {
-    this.connection = new signalR.HubConnectionBuilder()
-      .configureLogging(LogLevel.Debug)
-      .withUrl("https://localhost:44378/hub/chat", {
-        skipNegotiation: true,
-        transport: HttpTransportType.WebSockets
-      })
-      .withAutomaticReconnect([0, 5000, 150000, 300000])
-      .build();
+    try {
+      this.connection = new signalR.HubConnectionBuilder()
+        .configureLogging(LogLevel.Debug)
+        .withUrl(`${GlobalVarialbe.BASE_HUBCONNECTION_URL}/hub/chat`, {
+          skipNegotiation: true,
+          transport: HttpTransportType.WebSockets
+        })
+        .withAutomaticReconnect([0, 5000, 150000, 300000])
+        .build();
+    }
+    catch (e) {
+    }
   }
 
   connect(): void {
@@ -40,11 +45,19 @@ export class SignalRService {
     this.connection.on('Status', data => {
       console.log(data as SignalRModal);
     });
+
+    //this.connection.on('ReceivedMessage', data => console.log(data));
   }
 
   async createConversation(): Promise<any> {
     const connectionId = window.sessionStorage.getItem('connectionId');
     const userId = window.sessionStorage.getItem('userId');
     return await this.connection.invoke('CreateConveration', connectionId, userId, "");
+  }
+
+  async sendMessage(conversationId: string, message: string): Promise<any> {
+    const connectionId = window.sessionStorage.getItem('connectionId');
+    const userId = window.sessionStorage.getItem('userId');
+    return await this.connection.invoke('SendMessage', connectionId, userId, conversationId, message);
   }
 }
