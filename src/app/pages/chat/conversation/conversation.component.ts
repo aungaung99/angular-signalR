@@ -84,6 +84,10 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.messagesBox.nativeElement.scrollTop = this.messagesBox.nativeElement.scrollHeight;
   }
 
+  sendImage(): void {
+
+  }
+
   appendMessage(message: string, reverse: boolean): HTMLDivElement {
     const div_flex: HTMLDivElement = this.render.createElement('div');
     div_flex.classList.add('flex', 'mb-4');
