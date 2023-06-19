@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   styleUrls: ['./chat.component.scss']
 })
 export class ChatComponent implements OnInit {
-  @ViewChild('userId') userId!: ElementRef<HTMLInputElement>;
+  @ViewChild('intialMessage') intialMessage!: ElementRef<HTMLInputElement>;
   connectionId: string = '';
   status: string = '';
   conversation!: ChatConversationModal;
@@ -23,13 +23,8 @@ export class ChatComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  userIdChange(): void {
-    let _userId = this.userId.nativeElement.value;
-    console.log(_userId);
-  }
-
   createConversation(): void {
-    this.signalRService.createConversation()
+    this.signalRService.createConversation(this.intialMessage.nativeElement.value)
       .then((res) => {
         this.router.navigate(['./chat/conversation'],
           { queryParams: { id: res } })

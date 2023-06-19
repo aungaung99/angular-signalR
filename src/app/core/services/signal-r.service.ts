@@ -49,10 +49,10 @@ export class SignalRService {
     //this.connection.on('ReceivedMessage', data => console.log(data));
   }
 
-  async createConversation(): Promise<any> {
+  async createConversation(initalMessage: string): Promise<any> {
     const connectionId = window.sessionStorage.getItem('connectionId');
     const userId = window.sessionStorage.getItem('userId');
-    return await this.connection.invoke('CreateConversation', connectionId, userId, "");
+    return await this.connection.invoke('CreateConversation', connectionId, userId, initalMessage, "");
   }
 
   async sendMessage(conversationId: string, message: string): Promise<any> {
