@@ -16,6 +16,9 @@ import { SignalRService } from './core/services/signal-r.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChatSkeletonComponent } from './shared/components/chat-skeleton/chat-skeleton.component';
 import { DateTimeComponent } from './shared/components/date-time/date-time.component';
+import { HashLocationStrategy, LocationStrategy } from "@angular/common";
+import { SpinnerComponent } from './shared/components/spinner/spinner.component';
+import { UiDirective } from './shared/directives/ui.directive';
 
 @NgModule({
   declarations: [
@@ -27,6 +30,8 @@ import { DateTimeComponent } from './shared/components/date-time/date-time.compo
     ToastComponent,
     ChatSkeletonComponent,
     DateTimeComponent,
+    SpinnerComponent,
+    UiDirective,
   ],
   imports: [
     BrowserModule,
@@ -36,11 +41,16 @@ import { DateTimeComponent } from './shared/components/date-time/date-time.compo
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [ChatService, AuthService, SignalRService, {
-    provide: HTTP_INTERCEPTORS,
-    useClass: AuthInterceptor,
-    multi: true
-  }
+  providers: [ChatService, AuthService, SignalRService,
+    {
+      provide: LocationStrategy,
+      useClass: HashLocationStrategy
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

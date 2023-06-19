@@ -1,5 +1,5 @@
 import {
-  AfterContentInit,
+  AfterContentInit, AfterViewChecked,
   AfterViewInit,
   Component,
   ElementRef,
@@ -20,7 +20,7 @@ import { SignalRService } from 'src/app/core/services/signal-r.service';
   templateUrl: './conversation.component.html',
   styleUrls: ['./conversation.component.scss']
 })
-export class ConversationComponent implements OnInit, AfterViewInit {
+export class ConversationComponent implements OnInit, AfterViewInit,AfterViewChecked {
   conversation: Partial<ChatConversationModal> = {};
   @ViewChild('messagesBox') messagesBox!: ElementRef<HTMLDivElement>;
   @ViewChild("textMessage") textMessage!: ElementRef<HTMLInputElement>;
@@ -39,6 +39,10 @@ export class ConversationComponent implements OnInit, AfterViewInit {
   ngAfterViewInit(): void {
     this.messagesBox.nativeElement.style.height = `${screen.height - 363}px`;
 
+    this.messagesBox.nativeElement.scrollTop = this.messagesBox.nativeElement.scrollHeight;
+  }
+
+  ngAfterViewChecked() {
     this.messagesBox.nativeElement.scrollTop = this.messagesBox.nativeElement.scrollHeight;
   }
 
