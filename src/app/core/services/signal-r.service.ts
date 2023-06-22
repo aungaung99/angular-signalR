@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import { HttpTransportType, LogLevel } from '@microsoft/signalr';
-import { Subject } from 'rxjs/internal/Subject';
-import { SignalRModal } from '../model/signal-r-modal';
-import { GlobalVarialbe } from 'src/app/global';
+import {HttpTransportType, LogLevel} from '@microsoft/signalr';
+import {Subject} from 'rxjs/internal/Subject';
+import {SignalRModal} from '../model/signal-r-modal';
+import {GlobalVarialbe} from 'src/app/global';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +11,7 @@ import { GlobalVarialbe } from 'src/app/global';
 export class SignalRService {
   public connection!: signalR.HubConnection;
   private message$!: Subject<any>;
+
   constructor() {
     try {
       this.connection = new signalR.HubConnectionBuilder()
@@ -19,10 +20,9 @@ export class SignalRService {
           skipNegotiation: true,
           transport: HttpTransportType.WebSockets
         })
-        .withAutomaticReconnect([0, 5000, 150000, 300000])
+        .withAutomaticReconnect([0, 5000, 15000, 30000])
         .build();
-    }
-    catch (e) {
+    } catch (e) {
     }
   }
 
@@ -40,24 +40,42 @@ export class SignalRService {
             .then((data) => {
               console.log(data)
             });
-        })
+
+        });
     });
     this.connection.on('Status', data => {
       console.log(data as SignalRModal);
     });
 
+    this.connection.onreconnected(data => {
+      this.connection.invoke('GetConnectionId')
+        .then((gValue) => {
+
+          // Save ConnectionId to Session Storage
+          window.sessionStorage.setItem('connectionId', gValue);
+
+          // Send connectionId to server
+          this.connection
+            .invoke('SaveConnection', gValue, window.sessionStorage.getItem('userId'))
+            .then((data) => {
+              console.log(data)
+            });
+
+        });
+    });
+
     //this.connection.on('ReceivedMessage', data => console.log(data));
   }
 
-  async createConversation(initalMessage: string): Promise<any> {
+  async createConversation(initalMessage: string, orderId: string): Promise<any> {
     const connectionId = window.sessionStorage.getItem('connectionId');
     const userId = window.sessionStorage.getItem('userId');
-    return await this.connection.invoke('CreateConversation', connectionId, userId, initalMessage, "");
+    return await this.connection.invoke('CreateConversation', connectionId, userId, initalMessage, orderId);
   }
 
   async sendMessage(conversationId: string, message: string): Promise<any> {
     const connectionId = window.sessionStorage.getItem('connectionId');
     const userId = window.sessionStorage.getItem('userId');
-    return await this.connection.invoke('SendMessage', connectionId, userId, conversationId, message);
+    return await this.connection.invoke('SendMessage', connectionId, userId, conversationId, message, '');
   }
 }

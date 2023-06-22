@@ -49,7 +49,7 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
   ngOnInit(): void {
     this.route.queryParams.subscribe((params) => {
       this.conversationId = params['id'];
-      this.chatService.getData(params['id'], 0, 20).subscribe((res) => {
+      this.chatService.getData(params['id'], 0, 100).subscribe((res) => {
         this.isFetching = false;
         this.conversation = res.data;
         this.messagesBox.nativeElement.scrollTop = 400;//this.messagesBox.nativeElement.scrollHeight;
@@ -63,9 +63,10 @@ export class ConversationComponent implements OnInit, AfterViewInit, AfterViewCh
     this.signalRService.connection.on('ReceivedMessage', data => {
       console.log(data);
       let chatMessage: ChatMessageModal = data as ChatMessageModal;
-      let messageUI = this.appendMessage(chatMessage.message, false);
-      this.messagesBox.nativeElement.append(messageUI);
-
+      if(this.currentUserId!==chatMessage.userId){
+        let messageUI = this.appendMessage(chatMessage.message, false);
+        this.messagesBox.nativeElement.append(messageUI);
+      }
       this.messagesBox.nativeElement.scrollTop = this.messagesBox.nativeElement.scrollHeight;
     });
   }
