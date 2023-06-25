@@ -11,7 +11,6 @@ import { SwPush, SwUpdate } from '@angular/service-worker';
 export class AppComponent implements OnInit, AfterViewInit {
   title = 'angular-signalR';
   readonly VAPID_PUBLIC_KEY = 'BPn77rbo30ELEOgk5iFxsSgokTGUrXKdLJUxlXC0q_hh1G--m2tMgfkifJuDmjNgFOY8eCOfj_ZEf3aXS42-4F4';
-  private baseUrl = 'http://localhost:5000/notifications';
 
   constructor(
     private signalRService: SignalRService,
