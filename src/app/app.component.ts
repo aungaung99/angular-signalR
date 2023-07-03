@@ -20,30 +20,30 @@ export class AppComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    if (this.swUpdate.isEnabled) {
-      this.swUpdate.available
-        .subscribe(() => {
-          this.swUpdate
-            .activateUpdate()
-            .then(() => {
-              window.location.reload();
-            });
-        });
-    }
+    // if (this.swUpdate.isEnabled) {
+    //   this.swUpdate.available
+    //     .subscribe(() => {
+    //       this.swUpdate
+    //         .activateUpdate()
+    //         .then(() => {
+    //           //window.location.reload();
+    //         });
+    //     });
+    // }
   }
 
   ngOnInit(): void {
     if (this.authSerivce.isLoggedIn())
       this.signalRService.connect();
 
-    Notification.requestPermission((res) => {
-      if (res === 'granted') {
-        console.log('Notification permission granted');
-      }
-      else {
-        console.log(res);
-      }
-    });
+    // Notification.requestPermission((res) => {
+    //   if (res === 'granted') {
+    //     console.log('Notification permission granted');
+    //   }
+    //   else {
+    //     console.log(res);
+    //   }
+    // });
   }
 
   subscribeToNotifications() {
