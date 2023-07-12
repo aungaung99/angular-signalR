@@ -1,9 +1,9 @@
-import {Injectable} from '@angular/core';
+import { Injectable } from '@angular/core';
 import * as signalR from '@microsoft/signalr';
-import {HttpTransportType, LogLevel} from '@microsoft/signalr';
-import {Subject} from 'rxjs/internal/Subject';
-import {SignalRModal} from '../model/signal-r-modal';
-import {GlobalVarialbe} from 'src/app/global';
+import { HttpTransportType, LogLevel } from '@microsoft/signalr';
+import { Subject } from 'rxjs/internal/Subject';
+import { SignalRModal } from '../model/signal-r-modal';
+import { GlobalVarialbe } from 'src/app/global';
 
 @Injectable({
   providedIn: 'root'
@@ -41,10 +41,24 @@ export class SignalRService {
               console.log(data)
             });
 
+          // Join Connection for Call
+          // this.connection
+          //   .invoke('JoinConnection', window.sessionStorage.getItem('connectionId'), 'KR5C-AUGP-3CAO-5W00')
+          //   .then((data) => {
+          //     console.log(data);
+          //   });
         });
     });
     this.connection.on('Status', data => {
       console.log(data as SignalRModal);
+    });
+
+    this.connection.on('PairedConnection', data => {
+      console.log(data)
+    });
+
+    this.connection.on('ReceivedMessage', data => {
+      console.log({ ReceivedMessage: data });
     });
 
     this.connection.onreconnected(data => {
