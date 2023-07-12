@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, isDevMode } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
@@ -19,7 +19,7 @@ import { DateTimeComponent } from './shared/components/date-time/date-time.compo
 import { HashLocationStrategy, LocationStrategy } from "@angular/common";
 import { SpinnerComponent } from './shared/components/spinner/spinner.component';
 import { UiDirective } from './shared/directives/ui.directive';
-
+import { ServiceWorkerModule, SwPush, SwUpdate } from '@angular/service-worker';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,9 +39,20 @@ import { UiDirective } from './shared/directives/ui.directive';
     AppRoutingModule,
     HttpClientModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', {
+      enabled: true,
+      // Register the ServiceWorker as soon as the application is stable
+      // or after 30 seconds (whichever comes first).
+      registrationStrategy: 'registerWhenStable:30000'
+    })
   ],
-  providers: [ChatService, AuthService, SignalRService,
+  providers: [
+    ChatService,
+    AuthService,
+    SignalRService,
+    SwUpdate,
+    SwPush,
     {
       provide: LocationStrategy,
       useClass: HashLocationStrategy
